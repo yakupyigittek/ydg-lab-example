@@ -57,6 +57,7 @@ class ExternalRequestTest {
             return;
         }
 
-        assertEquals(200, response.statusCode(), "Beklenen durum kodu 200, gelen: " + response.statusCode());
+        // Testi kasıtlı olarak başarısız yapmak için beklenen kodu 201'e çekiyoruz
+        assertEquals(201, response.statusCode(), "Beklenen durum kodu 201 (kasıtlı), gelen: " + response.statusCode());
     }
 }
