@@ -3,6 +3,7 @@ pipeline {
 
   options {
     timestamps()
+    skipDefaultCheckout()
   }
 
   stages {
@@ -19,12 +20,15 @@ pipeline {
     }
 
     stage('Build & Test') {
+      when {
+        expression {
+          def b = (env.BRANCH_NAME ?: env.GIT_BRANCH ?: '')
+          return b == 'main' || b == 'origin/main' || b.endsWith('/main')
+        }
+      }
       steps {
         // Windows ajanında Gradle Wrapper ile testleri çalıştır
-        // ANSI renkleri steps içinde wrap ederek etkinleştiriyoruz
-        ansiColor('xterm') {
-          bat 'gradlew.bat clean test --no-daemon --console=plain'
-        }
+        bat 'gradlew.bat clean test --no-daemon --console=plain'
       }
     }
   }
