@@ -3,7 +3,6 @@ pipeline {
 
   options {
     timestamps()
-    ansiColor('xterm')
   }
 
   stages {
@@ -15,8 +14,6 @@ pipeline {
 
     stage('Setup JDK') {
       steps {
-        // Eğer Jenkins'te JDK kurulu değilse, burayı kendi ortamınıza göre uyarlayın
-        // withEnv gibi ek JAVA_HOME ayarları da yapılabilir.
         echo 'Using default JDK on agent'
       }
     }
@@ -24,8 +21,10 @@ pipeline {
     stage('Build & Test') {
       steps {
         // Windows ajanında Gradle Wrapper ile testleri çalıştır
-        // PowerShell shell'inde wrapper .bat kullanılmalı
-        bat 'gradlew.bat clean test --no-daemon --console=plain'
+        // ANSI renkleri steps içinde wrap ederek etkinleştiriyoruz
+        ansiColor('xterm') {
+          bat 'gradlew.bat clean test --no-daemon --console=plain'
+        }
       }
     }
   }
@@ -47,4 +46,3 @@ pipeline {
     }
   }
 }
-
