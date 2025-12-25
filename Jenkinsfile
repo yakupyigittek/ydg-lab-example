@@ -44,8 +44,5 @@ pipeline {
     failure {
       echo 'Tests failed. Pipeline failed.'
     }
-    always {
-      // ...existing code...
-    }
   }
 }
